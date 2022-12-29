@@ -1,9 +1,11 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
+import { expenses } from "../dummyData";
 
 export default function AllExpenses() {
 	return (
 		<View>
-			<Text>All Expenses Screen</Text>
+			<ExpensesOutput expenses={expenses} expensePeriod="All Expenses" />
 		</View>
 	);
 }
