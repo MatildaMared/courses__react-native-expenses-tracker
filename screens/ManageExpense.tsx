@@ -19,11 +19,17 @@ export default function ManageExpense(props: Props) {
 		});
 	}, [isEditing, navigation]);
 
-	function deleteExpenseHandler() {}
+	function deleteExpenseHandler() {
+		navigation.goBack();
+	}
 
-	function cancelHandler() {}
+	function cancelHandler() {
+		navigation.goBack();
+	}
 
-	function confirmHandler() {}
+	function confirmHandler() {
+		navigation.goBack();
+	}
 
 	return (
 		<View style={styles.container}>
