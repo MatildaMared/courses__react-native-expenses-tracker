@@ -17,7 +17,7 @@ export default function ExpenseItem(props: Props) {
 					<Text style={styles.date}>{expense.date.toLocaleDateString()}</Text>
 				</View>
 				<View style={styles.amountContainer}>
-					<Text style={styles.amount}>${expense.amount}</Text>
+					<Text style={styles.amount}>${expense.amount.toFixed(2)}</Text>
 				</View>
 			</View>
 		</Pressable>
@@ -56,9 +56,11 @@ const styles = StyleSheet.create({
 		borderRadius: 6,
 		alignContent: "center",
 		justifyContent: "center",
+		minWidth: 90,
 	},
 	amount: {
 		fontWeight: "bold",
 		color: GlobalStyles.colors.primary500,
+		textAlign: "center",
 	},
 });
