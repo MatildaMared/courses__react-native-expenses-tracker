@@ -3,9 +3,5 @@ import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import { expenses } from "../dummyData";
 
 export default function AllExpenses() {
-	return (
-		<View>
-			<ExpensesOutput expenses={expenses} expensePeriod="All Expenses" />
-		</View>
-	);
+	return <ExpensesOutput expenses={expenses} expensePeriod="All Expenses" />;
 }

@@ -18,8 +18,12 @@ function ExpensesOverview() {
 			screenOptions={{
 				headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
 				headerTintColor: "white",
-				tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+				tabBarStyle: {
+					backgroundColor: GlobalStyles.colors.primary500,
+					borderTopWidth: 0,
+				},
 				tabBarActiveTintColor: GlobalStyles.colors.accent500,
+				headerShadowVisible: false,
 			}}
 		>
 			<BottomTabs.Screen
@@ -53,7 +57,11 @@ export default function App() {
 		<>
 			<StatusBar style="light" />
 			<NavigationContainer>
-				<Stack.Navigator>
+				<Stack.Navigator
+					screenOptions={{
+						headerShadowVisible: false,
+					}}
+				>
 					<Stack.Screen
 						name="ExpensesOverview"
 						component={ExpensesOverview}

@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 		padding: 16,
 		backgroundColor: GlobalStyles.colors.primary50,
 		borderRadius: 8,
-		margin: 16,
 		flexDirection: "row",
 		justifyContent: "space-between",
 	},
