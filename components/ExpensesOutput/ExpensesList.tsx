@@ -1,18 +1,13 @@
 import { FlatList, Text, View } from "react-native";
 import { Expense } from "../../types/Expense";
+import ExpenseItem from "./ExpenseItem";
 
 interface Props {
 	expenses: Expense[];
 }
 
 function renderExpenseItem(expense: Expense) {
-	return (
-		<View>
-			<Text>{expense.date.toLocaleDateString()}</Text>
-			<Text>{expense.description}</Text>
-			<Text>${expense.amount}</Text>
-		</View>
-	);
+	return <ExpenseItem expense={expense} />;
 }
 
 export default function ExpensesList(props: Props) {

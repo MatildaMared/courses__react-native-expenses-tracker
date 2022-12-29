@@ -25,10 +25,11 @@ export default function ExpensesSummary(props: Props) {
 const styles = StyleSheet.create({
 	container: {
 		padding: 16,
-		backgroundColor: GlobalStyles.colors.primary50,
+		backgroundColor: GlobalStyles.colors.primary100,
 		borderRadius: 8,
 		flexDirection: "row",
 		justifyContent: "space-between",
+		marginBottom: 16,
 	},
 	period: {
 		color: GlobalStyles.colors.primary500,
