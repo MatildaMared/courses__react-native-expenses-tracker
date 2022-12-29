@@ -15,7 +15,7 @@ import IconButton from "./components/UI/IconButton";
 
 export type StackParamList = {
 	ExpensesOverview: undefined;
-	ManageExpense: undefined;
+	ManageExpense: { expenseId: string } | undefined;
 };
 
 export type BottomTabParamList = {
@@ -83,6 +83,8 @@ export default function App() {
 				<Stack.Navigator
 					screenOptions={{
 						headerShadowVisible: false,
+						headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+						headerTintColor: "white",
 					}}
 				>
 					<Stack.Screen
@@ -90,7 +92,13 @@ export default function App() {
 						component={ExpensesOverview}
 						options={{ headerShown: false }}
 					/>
-					<Stack.Screen name="ManageExpense" component={ManageExpense} />
+					<Stack.Screen
+						name="ManageExpense"
+						component={ManageExpense}
+						options={{
+							presentation: "modal",
+						}}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</>

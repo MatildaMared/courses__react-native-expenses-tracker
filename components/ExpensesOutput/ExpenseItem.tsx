@@ -15,7 +15,9 @@ export default function ExpenseItem(props: Props) {
 
 	function expensePressHandler() {
 		console.log("Expense pressed!");
-		navigation.navigate("ManageExpense");
+		navigation.navigate("ManageExpense", {
+			expenseId: expense.id,
+		});
 	}
 
 	return (
