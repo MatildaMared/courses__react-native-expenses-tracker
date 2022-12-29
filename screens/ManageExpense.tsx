@@ -1,14 +1,17 @@
 import { View, Text, StyleSheet } from "react-native";
 import { StackParamList } from "../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import Button from "../components/UI/Button";
+import { ExpensesContext } from "../store/expenses-context";
 
 type Props = NativeStackScreenProps<StackParamList, "ManageExpense">;
 
 export default function ManageExpense(props: Props) {
+	const { expenses, addExpense, updateExpense, deleteExpense } =
+		useContext(ExpensesContext);
 	const { route, navigation } = props;
 	const expenseId = route.params?.expenseId;
 	const isEditing = expenseId !== undefined;
@@ -20,6 +23,7 @@ export default function ManageExpense(props: Props) {
 	}, [isEditing, navigation]);
 
 	function deleteExpenseHandler() {
+		deleteExpense(expenseId!);
 		navigation.goBack();
 	}
 
