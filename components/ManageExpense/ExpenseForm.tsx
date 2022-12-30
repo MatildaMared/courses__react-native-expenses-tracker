@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { Expense } from "../../types/Expense";
 import { ExpenseToBeAdded } from "../../types/ExpenseToBeAdded";
 import { ExpenseToBeUpdated } from "../../types/ExpenseToBeUpdated";
@@ -23,7 +23,11 @@ export default function ExpenseForm(props: Props) {
 	};
 
 	const [inputValues, setInputValues] = useState(initialValues);
-	const [errorMessages, setErrorMessages] = useState("");
+	const [errorMessages, setErrorMessages] = useState({
+		amount: "",
+		date: "",
+		description: "",
+	});
 
 	function inputChangeHandler(inputKey: string, input: string) {
 		setInputValues((inputValues) => ({
@@ -44,8 +48,13 @@ export default function ExpenseForm(props: Props) {
 		const descriptionIsValid = expenseData.description.trim().length > 0;
 
 		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
-			setErrorMessages("Please enter valid values for all fields.");
-			Alert.alert("Invalid input", "Please enter valid values for all fields.");
+			setErrorMessages({
+				amount: amountIsValid ? "" : "Please enter a valid amount.",
+				date: dateIsValid ? "" : "Please enter a valid date.",
+				description: descriptionIsValid
+					? ""
+					: "Please enter a valid description.",
+			});
 			return;
 		}
 
@@ -65,6 +74,7 @@ export default function ExpenseForm(props: Props) {
 						marginRight: 16,
 						flex: 1,
 					}}
+					errorMessage={errorMessages.amount}
 				/>
 				<Input
 					label="Date"
@@ -73,6 +83,7 @@ export default function ExpenseForm(props: Props) {
 					maxLength={10}
 					onChangeText={(date) => inputChangeHandler("date", date)}
 					style={{ flex: 1 }}
+					errorMessage={errorMessages.date}
 				/>
 			</View>
 			<Input
@@ -82,6 +93,7 @@ export default function ExpenseForm(props: Props) {
 					inputChangeHandler("description", description)
 				}
 				multiline={true}
+				errorMessage={errorMessages.description}
 			/>
 			<View style={styles.buttonsContainer}>
 				<Button style={styles.button} onPress={onCancel} mode="flat">

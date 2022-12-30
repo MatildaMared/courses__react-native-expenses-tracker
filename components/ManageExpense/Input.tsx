@@ -18,6 +18,7 @@ interface Props {
 	autoCapitalize?: "none" | "sentences" | "words" | "characters";
 	style?: any;
 	value?: string;
+	errorMessage?: string;
 }
 
 export default function Input(props: Props) {
@@ -32,14 +33,21 @@ export default function Input(props: Props) {
 		autoCapitalize,
 		style,
 		value,
+		errorMessage,
 	} = props;
+
+	const hasError = !!errorMessage;
 
 	return (
 		<View style={[styles.container, style && style]}>
 			<Text style={styles.label}>{label}</Text>
 			<TextInput
 				onChangeText={onChangeText}
-				style={[styles.input, multiline && styles.inputMultiline]}
+				style={[
+					styles.input,
+					multiline && styles.inputMultiline,
+					hasError && styles.error,
+				]}
 				keyboardType={type}
 				placeholder={placeholder}
 				maxLength={maxLength}
@@ -48,6 +56,7 @@ export default function Input(props: Props) {
 				autoCapitalize={autoCapitalize}
 				value={value}
 			/>
+			<Text style={styles.errorText}>{hasError && errorMessage}</Text>
 		</View>
 	);
 }
@@ -72,5 +81,13 @@ const styles = StyleSheet.create({
 		minHeight: 100,
 		textAlignVertical: "top",
 		paddingTop: 12,
+	},
+	error: {
+		backgroundColor: GlobalStyles.colors.error50,
+	},
+	errorText: {
+		marginTop: 4,
+		color: GlobalStyles.colors.error50,
+		fontSize: 12,
 	},
 });
