@@ -19,11 +19,6 @@ export default function ManageExpense(props: Props) {
 	const expenseId = route.params?.expenseId;
 	const isEditing = expenseId !== undefined;
 	const expenseToEdit = expenses.find((expense) => expense.id === expenseId);
-	const expenseToEditValues = expenseToEdit && {
-		amount: expenseToEdit.amount.toString(),
-		date: expenseToEdit.date.toISOString().split("T")[0],
-		description: expenseToEdit.description,
-	};
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -52,7 +47,7 @@ export default function ManageExpense(props: Props) {
 	return (
 		<View style={styles.container}>
 			<ExpenseForm
-				defaultValues={expenseToEditValues && expenseToEditValues}
+				expenseToEdit={expenseToEdit && expenseToEdit}
 				onCancel={cancelHandler}
 				onSubmit={submitHandler}
 				submitButtonLabel={isEditing ? "Update" : "Add"}

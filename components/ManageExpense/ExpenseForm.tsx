@@ -1,33 +1,29 @@
 import { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
+import { Expense } from "../../types/Expense";
 import { ExpenseToBeAdded } from "../../types/ExpenseToBeAdded";
 import { ExpenseToBeUpdated } from "../../types/ExpenseToBeUpdated";
 import Button from "../UI/Button";
 import Input from "./Input";
 
 interface Props {
-	defaultValues?: {
-		amount: string;
-		date: string;
-		description: string;
-	};
+	expenseToEdit?: Expense;
 	onSubmit: (expenseData: ExpenseToBeAdded | ExpenseToBeUpdated) => void;
 	onCancel: () => void;
 	submitButtonLabel: string;
 }
 
 export default function ExpenseForm(props: Props) {
-	const { onSubmit, onCancel, submitButtonLabel, defaultValues } = props;
+	const { onSubmit, onCancel, submitButtonLabel, expenseToEdit } = props;
 
-	const [inputValues, setInputValues] = useState(
-		defaultValues
-			? defaultValues
-			: {
-					amount: "",
-					date: "",
-					description: "",
-			  }
-	);
+	const initialValues = {
+		amount: expenseToEdit?.amount.toString() || "",
+		date: expenseToEdit?.date.toISOString().split("T")[0] || "",
+		description: expenseToEdit?.description || "",
+	};
+
+	const [inputValues, setInputValues] = useState(initialValues);
+	const [errorMessages, setErrorMessages] = useState("");
 
 	function inputChangeHandler(inputKey: string, input: string) {
 		setInputValues((inputValues) => ({
@@ -42,6 +38,16 @@ export default function ExpenseForm(props: Props) {
 			date: new Date(inputValues.date),
 			description: inputValues.description,
 		};
+
+		const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
+		const dateIsValid = !isNaN(expenseData.date.getTime());
+		const descriptionIsValid = expenseData.description.trim().length > 0;
+
+		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+			setErrorMessages("Please enter valid values for all fields.");
+			Alert.alert("Invalid input", "Please enter valid values for all fields.");
+			return;
+		}
 
 		onSubmit(expenseData);
 	}
