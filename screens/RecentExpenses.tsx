@@ -4,7 +4,7 @@ import { ExpensesContext } from "../store/expenses-context";
 
 export default function RecentExpenses() {
 	const { expenses } = useContext(ExpensesContext);
-	
+
 	const recentExpenses = expenses.filter((expense) => {
 		const expenseDate = new Date(expense.date);
 		const today = new Date();
@@ -14,6 +14,10 @@ export default function RecentExpenses() {
 	});
 
 	return (
-		<ExpensesOutput expenses={recentExpenses} expensePeriod="Last 7 days" />
+		<ExpensesOutput
+			fallbackText={"You don't have any recent expenses."}
+			expenses={recentExpenses}
+			expensePeriod="Last 7 days"
+		/>
 	);
 }

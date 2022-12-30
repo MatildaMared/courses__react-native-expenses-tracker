@@ -5,5 +5,11 @@ import { ExpensesContext } from "../store/expenses-context";
 export default function AllExpenses() {
 	const { expenses } = useContext(ExpensesContext);
 
-	return <ExpensesOutput expenses={expenses} expensePeriod="All Expenses" />;
+	return (
+		<ExpensesOutput
+			fallbackText="You haven't registered any expenses yet."
+			expenses={expenses}
+			expensePeriod="All Expenses"
+		/>
+	);
 }
