@@ -7,7 +7,7 @@ import { ExpenseToBeUpdated } from "../types/ExpenseToBeUpdated";
 
 export const ExpensesContext = createContext({
 	expenses: [] as Expense[],
-	addExpense: (expense: Expense) => {},
+	addExpense: (expense: ExpenseToBeAdded) => {},
 	deleteExpense: (id: string) => {},
 	updateExpense: (id: string, expense: ExpenseToBeUpdated) => {},
 });

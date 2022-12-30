@@ -32,6 +32,19 @@ export default function ManageExpense(props: Props) {
 	}
 
 	function confirmHandler() {
+		if (isEditing) {
+			// Update existing expense
+			updateExpense(expenseId!, {
+				description: "Updated title",
+			});
+		} else {
+			// Add new expense
+			addExpense({
+				description: "New expense",
+				amount: 99.99,
+				date: new Date(),
+			});
+		}
 		navigation.goBack();
 	}
 

@@ -14,7 +14,6 @@ export default function ExpenseItem(props: Props) {
 	const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
 	function expensePressHandler() {
-		console.log("Expense pressed!");
 		navigation.navigate("ManageExpense", {
 			expenseId: expense.id,
 		});
