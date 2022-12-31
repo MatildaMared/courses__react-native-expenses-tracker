@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 		paddingTop: 12,
 	},
 	error: {
-		backgroundColor: GlobalStyles.colors.error50,
+        backgroundColor: GlobalStyles.colors.error50,
 	},
 	errorText: {
 		marginTop: 4,

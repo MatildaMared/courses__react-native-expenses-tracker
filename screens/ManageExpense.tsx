@@ -9,6 +9,8 @@ import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { ExpenseToBeAdded } from "../types/ExpenseToBeAdded";
 import { ExpenseToBeUpdated } from "../types/ExpenseToBeUpdated";
+import { storeExpense } from "../utils/http";
+import { Expense } from "../types/Expense";
 
 type Props = NativeStackScreenProps<StackParamList, "ManageExpense">;
 
@@ -35,11 +37,14 @@ export default function ManageExpense(props: Props) {
 		navigation.goBack();
 	}
 
-	function submitHandler(expenseData: ExpenseToBeAdded | ExpenseToBeUpdated) {
+	async function submitHandler(
+		expenseData: ExpenseToBeAdded | ExpenseToBeUpdated
+	) {
 		if (isEditing) {
 			updateExpense(expenseId!, expenseData);
 		} else {
-			addExpense(expenseData as ExpenseToBeAdded);
+			const id = await storeExpense(expenseData as ExpenseToBeAdded);
+			addExpense({ id, ...expenseData } as Expense);
 		}
 		navigation.goBack();
 	}

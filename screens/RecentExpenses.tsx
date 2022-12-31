@@ -1,9 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import { ExpensesContext } from "../store/expenses-context";
+import { getExpenses } from "../utils/http";
 
 export default function RecentExpenses() {
-	const { expenses } = useContext(ExpensesContext);
+	const { setExpenses, expenses } = useContext(ExpensesContext);
+
+	useEffect(() => {
+		async function getData() {
+			const expenses = await getExpenses();
+			setExpenses(expenses);
+		}
+
+		getData();
+	}, []);
 
 	const recentExpenses = expenses.filter((expense) => {
 		const expenseDate = new Date(expense.date);
