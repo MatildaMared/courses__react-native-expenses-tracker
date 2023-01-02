@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Expense } from "../types/Expense";
 import { ExpenseToBeAdded } from "../types/ExpenseToBeAdded";
+import { ExpenseToBeUpdated } from "../types/ExpenseToBeUpdated";
 
 const ROOT_URL =
 	"https://react-native-course-dc5ca-default-rtdb.europe-west1.firebasedatabase.app";
@@ -26,4 +27,12 @@ export async function getExpenses(): Promise<Expense[]> {
 	}
 
 	return expenses;
+}
+
+export async function updateExpense(id: string, expenseData: ExpenseToBeUpdated) {
+	return axios.put(`${ROOT_URL}/expenses/${id}.json`, expenseData);
+}
+
+export async function deleteExpense(id: string) {
+	return axios.delete(`${ROOT_URL}/expenses/${id}.json`);
 }

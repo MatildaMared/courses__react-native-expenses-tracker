@@ -9,7 +9,11 @@ import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { ExpenseToBeAdded } from "../types/ExpenseToBeAdded";
 import { ExpenseToBeUpdated } from "../types/ExpenseToBeUpdated";
-import { storeExpense } from "../utils/http";
+import {
+	storeExpense as storeExpenseInDB,
+	updateExpense as updateExpenseInDB,
+	deleteExpense as deleteExpenseFromDB,
+} from "../utils/http";
 import { Expense } from "../types/Expense";
 
 type Props = NativeStackScreenProps<StackParamList, "ManageExpense">;
@@ -28,8 +32,9 @@ export default function ManageExpense(props: Props) {
 		});
 	}, [isEditing, navigation]);
 
-	function deleteExpenseHandler() {
+	async function deleteExpenseHandler() {
 		deleteExpense(expenseId!);
+		await deleteExpenseFromDB(expenseId!);
 		navigation.goBack();
 	}
 
@@ -42,8 +47,17 @@ export default function ManageExpense(props: Props) {
 	) {
 		if (isEditing) {
 			updateExpense(expenseId!, expenseData);
+			const oldExpense = expenses.find((expense) => expense.id === expenseId);
+			await updateExpenseInDB(expenseId, {
+				...{
+					amount: oldExpense?.amount,
+					description: oldExpense?.description,
+					date: oldExpense?.date,
+				},
+				...expenseData,
+			});
 		} else {
-			const id = await storeExpense(expenseData as ExpenseToBeAdded);
+			const id = await storeExpenseInDB(expenseData as ExpenseToBeAdded);
 			addExpense({ id, ...expenseData } as Expense);
 		}
 		navigation.goBack();
