@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { StackParamList } from "../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import Button from "../components/UI/Button";
@@ -15,10 +15,12 @@ import {
 	deleteExpense as deleteExpenseFromDB,
 } from "../utils/http";
 import { Expense } from "../types/Expense";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 type Props = NativeStackScreenProps<StackParamList, "ManageExpense">;
 
 export default function ManageExpense(props: Props) {
+	const [isLoading, setIsLoading] = useState(false);
 	const { expenses, addExpense, updateExpense, deleteExpense } =
 		useContext(ExpensesContext);
 	const { route, navigation } = props;
@@ -45,6 +47,7 @@ export default function ManageExpense(props: Props) {
 	async function submitHandler(
 		expenseData: ExpenseToBeAdded | ExpenseToBeUpdated
 	) {
+		setIsLoading(true);
 		if (isEditing) {
 			updateExpense(expenseId!, expenseData);
 			const oldExpense = expenses.find((expense) => expense.id === expenseId);
@@ -56,12 +59,16 @@ export default function ManageExpense(props: Props) {
 				},
 				...expenseData,
 			});
+			setIsLoading(false);
 		} else {
 			const id = await storeExpenseInDB(expenseData as ExpenseToBeAdded);
 			addExpense({ id, ...expenseData } as Expense);
+			setIsLoading(false);
 		}
 		navigation.goBack();
 	}
+
+	if (isLoading) return <LoadingOverlay />;
 
 	return (
 		<View style={styles.container}>
