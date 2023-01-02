@@ -1,18 +1,24 @@
 import { useContext, useEffect, useState } from "react";
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import { ExpensesContext } from "../store/expenses-context";
 import { getExpenses } from "../utils/http";
 
 export default function RecentExpenses() {
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const { setExpenses, expenses } = useContext(ExpensesContext);
 
 	useEffect(() => {
 		async function getData() {
 			setIsLoading(true);
-			const expenses = await getExpenses();
-			setExpenses(expenses);
+			try {
+				const expenses = await getExpenses();
+				setExpenses(expenses);
+			} catch (error) {
+				setError("Could not fetch expenses data.");
+			}
 			setIsLoading(false);
 		}
 
@@ -27,7 +33,12 @@ export default function RecentExpenses() {
 		return days <= 7;
 	});
 
+	function errorHandler() {
+		setError(null);
+	}
+
 	if (isLoading) return <LoadingOverlay />;
+	if (error) return <ErrorOverlay message={error} onConfirm={errorHandler} />;
 
 	return (
 		<ExpensesOutput

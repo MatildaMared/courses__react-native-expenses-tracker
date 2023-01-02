@@ -16,11 +16,13 @@ import {
 } from "../utils/http";
 import { Expense } from "../types/Expense";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 type Props = NativeStackScreenProps<StackParamList, "ManageExpense">;
 
 export default function ManageExpense(props: Props) {
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const { expenses, addExpense, updateExpense, deleteExpense } =
 		useContext(ExpensesContext);
 	const { route, navigation } = props;
@@ -36,12 +38,25 @@ export default function ManageExpense(props: Props) {
 
 	async function deleteExpenseHandler() {
 		deleteExpense(expenseId!);
-		await deleteExpenseFromDB(expenseId!);
+		setIsLoading(true);
+		try {
+			await deleteExpenseFromDB(expenseId!);
+			setIsLoading(false);
+		} catch (error) {
+			setIsLoading(false);
+			setError(
+				"Something went wrong while trying to deleting the expense. Try again."
+			);
+		}
 		navigation.goBack();
 	}
 
 	function cancelHandler() {
 		navigation.goBack();
+	}
+
+	function resetErrorHandler() {
+		setError(null);
 	}
 
 	async function submitHandler(
@@ -69,6 +84,8 @@ export default function ManageExpense(props: Props) {
 	}
 
 	if (isLoading) return <LoadingOverlay />;
+	if (error)
+		return <ErrorOverlay message={error} onConfirm={resetErrorHandler} />;
 
 	return (
 		<View style={styles.container}>

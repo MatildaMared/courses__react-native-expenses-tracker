@@ -29,7 +29,10 @@ export async function getExpenses(): Promise<Expense[]> {
 	return expenses;
 }
 
-export async function updateExpense(id: string, expenseData: ExpenseToBeUpdated) {
+export async function updateExpense(
+	id: string,
+	expenseData: ExpenseToBeUpdated
+) {
 	return axios.put(`${ROOT_URL}/expenses/${id}.json`, expenseData);
 }
 
